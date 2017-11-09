@@ -6,12 +6,12 @@ from tkinter import *
 
 class SigmaChess:
     def __init__(self):
-        root = Tk()
+        self.root = Tk()
 
         #board client handles logic of chess board moves and attacks
         self.boardClient = chessBoard()
         #view client handles drawing everything
-        self.viewClient= AppWindow(root,self.boardClient)
+        self.viewClient= AppWindow(self.root,self.boardClient)
         self.viewClient.pack()
 
         # connection handler makes chess playable in multiplayer
@@ -20,19 +20,35 @@ class SigmaChess:
         self.eventsClient = EventHandler(self.boardClient, self.viewClient,self.multiplayerClient)
 
 
-        #this binds functions in event handler to actions performed on window
-        self.bindEvents()
 
-        #commented out for debugging
+        self.root.mainloop()
 
 
+    def launchSingleplayerGame(self):
+        # board client handles logic of chess board moves and attacks
+        self.boardClient = chessBoard()
+        # view client handles drawing everything
+        self.viewClient = AppWindow(self.root, self.boardClient)
+        self.viewClient.pack()
 
-        root.mainloop()
+        self.bindGameEvents()
 
-    def bindEvents(self):
+    ####TODO implement loop with windowmsgbox waiting for connection
+    def launchMultiplayerGame(self):
+        # connection handler makes chess playable in multiplayer
+        self.multiplayerClient = ConnectionHandler()
+
+        # board client handles logic of chess board moves and attacks
+        self.boardClient = chessBoard()
+        # view client handles drawing everything
+        self.viewClient = AppWindow(self.root, self.boardClient)
+        self.viewClient.pack()
+
+        self.bindGameEvents()
+    def bindGameEvents(self):
         """bind events to event handler; here go every event handle"""
         self.viewClient.viewBoardClient.addBinding("<Button-1>", self.eventsClient.boardClicked)
-        self.viewClient.viewNetworkClient.addConnectBtnBind(self.eventsClient.networkConnect)
+        self.viewClient.viewNetworkClient.addBindConnectBtn(self.eventsClient.networkConnect)
 
 
 

@@ -19,5 +19,5 @@ class NetworkWindow(Frame):
     def connectBtnClick(self):
         self.connectCallback(self.addressEntry.get())
 
-    def addConnectBtnBind(self,callback):
+    def addBindConnectBtn(self,callback):
         self.connectCallback=callback
