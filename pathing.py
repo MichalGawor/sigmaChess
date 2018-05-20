@@ -46,6 +46,8 @@ def linearFunction(x,y, boardArray, coordHorizontal, coordVert):
 
     for squarex in range(low + 1, high):
         squarey = squarex * a + b
+        if squarex >= len(boardArray) or squarey >= len(boardArray) or squarex < 0 or squarey < 0:
+            return False
         if boardArray[squarex][squarey] is not None:
             return False
     return True

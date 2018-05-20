@@ -1,32 +1,34 @@
-from board import chessBoard
-from view.appwindow import AppWindow
+from tkinter import *
+
+import sys
+sys.path.append("/home/vonvirus/Documents/sigmaChess/")
+print(sys.path)
+from board import ChessBoard
 from controller.events import EventHandler
 from controller.networking.multiplayer import ConnectionHandler
-from tkinter import *
+from view.appwindow import AppWindow
+
 
 class SigmaChess:
     def __init__(self):
         self.root = Tk()
 
         #board client handles logic of chess board moves and attacks
-        self.boardClient = chessBoard()
+        self.boardClient = ChessBoard()
         #view client handles drawing everything
-        self.viewClient= AppWindow(self.root,self.boardClient)
+        self.viewClient= AppWindow(self.root, self.boardClient)
         self.viewClient.pack()
 
         # connection handler makes chess playable in multiplayer
         self.multiplayerClient = ConnectionHandler()
         #event handler handles event performed on windows
-        self.eventsClient = EventHandler(self.boardClient, self.viewClient,self.multiplayerClient)
-
-
-
+        self.eventsClient = EventHandler(self.boardClient, self.viewClient, self.multiplayerClient)
         self.root.mainloop()
 
 
     def launchSingleplayerGame(self):
         # board client handles logic of chess board moves and attacks
-        self.boardClient = chessBoard()
+        self.boardClient = ChessBoard()
         # view client handles drawing everything
         self.viewClient = AppWindow(self.root, self.boardClient)
         self.viewClient.pack()
@@ -39,12 +41,13 @@ class SigmaChess:
         self.multiplayerClient = ConnectionHandler()
 
         # board client handles logic of chess board moves and attacks
-        self.boardClient = chessBoard()
+        self.boardClient = ChessBoard()
         # view client handles drawing everything
         self.viewClient = AppWindow(self.root, self.boardClient)
         self.viewClient.pack()
 
         self.bindGameEvents()
+
     def bindGameEvents(self):
         """bind events to event handler; here go every event handle"""
         self.viewClient.viewBoardClient.addBinding("<Button-1>", self.eventsClient.boardClicked)
@@ -58,7 +61,7 @@ class SigmaChess:
 ###############################DEBUG########################################
 
 if __name__ == "__main__":
-    x= SigmaChess()
+    x = SigmaChess()
 
 ############################################################################
 ############################################################################

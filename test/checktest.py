@@ -2,7 +2,7 @@ from board import *
 
 class SigmaChess():
 
-    board= chessBoard()
+    board= ChessBoard()
     board.boardArray[4][0]= None
     board.boardArray[4][7]= None
     board.boardArray[5][4]= pieceKing(5,4,factionColor.FACTION_WHITE)

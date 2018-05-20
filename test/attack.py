@@ -2,7 +2,7 @@ from board import *
 from pieces import *
 
 
-board= chessBoard()
+board= ChessBoard()
 
 board.boardArray[2][2]= piecePawn(2,2,factionColor.FACTION_WHITE)
 board.boardArray[3][3]= piecePawn(3,3,factionColor.FACTION_BLACK)

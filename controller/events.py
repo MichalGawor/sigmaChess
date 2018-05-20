@@ -21,15 +21,13 @@ class EventHandler:
         self.networkClient.SendMove(pieceToMove, targetCoords)
         if not self.boardClient.movePiece(pieceToMove, targetCoords[0], targetCoords[1]):
             return False
-
-
         return True
+
     def boardClicked(self, event):
         """handle click event; move piece"""
 
         # translate coords so that we can index module
         chessCoords = self.__translateCoordsToTiles(event.x, event.y)
-
         if(self.pieceSuspended!=None):
             if(self.__movePiece(self.pieceSuspended, chessCoords)):
                 self.pieceSuspended = None

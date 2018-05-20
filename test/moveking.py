@@ -4,7 +4,7 @@ from board import *
 ##TODO add test for both factions
 
 
-board= chessBoard()
+board= ChessBoard()
 
 board.boardArray[2][2]= pieceKing(2,2,factionColor.FACTION_WHITE)
 piece= board.getPiece(2,2)

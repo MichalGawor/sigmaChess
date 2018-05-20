@@ -54,9 +54,9 @@ class BoardWindow(Frame):
 ###############################DEBUG########################################
 
 if __name__ == "__main__":
-    from board import chessBoard
+    from board import ChessBoard
 
-    x=chessBoard()
+    x=ChessBoard()
     root= Tk()
     app = BoardWindow(root)
     app.drawBoard(x)
