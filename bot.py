@@ -10,6 +10,7 @@ class MoveNode:
         self.parent = parent
         self.pointAdvantage = None
         self.depth = 1
+        self.isCheckmate = False
 
     def getDepth(self):
         depth = 1
@@ -28,9 +29,21 @@ class MoveNode:
         return self.targetCoordinates
 
     def __gt__(self, other):
+        if self.isCheckmate and not other.isCheckmate:
+            return True
+        if self.isCheckmate and other.isCheckmate:
+            return False
+        if self.isCheckmate and other.isCheckmate:
+            return False
         return self.pointAdvantage > other.pointAdvantage
 
     def __lt__(self, other):
+        if not self.isCheckmate and other.isCheckmate:
+            return True
+        if self.isCheckmate and not other.isCheckmate:
+            return False
+        if self.isCheckmate and other.isCheckmate:
+            return False
         return self.pointAdvantage < other.pointAdvantage
 
     def __eq__(self, other):
@@ -44,6 +57,7 @@ class Bot:
         self.depth = depth
         self.side = side
         self.isSecondBot = isSecondBot
+
 
     def getActualBoard(self):
         return self.board
@@ -74,6 +88,8 @@ class Bot:
         if len(legalMoves) == 0:
             node.pointAdvantage = 0
             return
+        if self.board.factionLost(self.board.getOppositeFaction(self.side)):
+            node.isCheckmate = True
 
         for move in legalMoves:
             node.children.append(MoveNode(move, [], node))
@@ -130,16 +146,16 @@ class Bot:
         if node.children:
             for child in node.children:
                 child.pointAdvantage = self.getOptimalPointAdvantage(child)
-            if not self.isSecondBot:
-                if node.children[0].depth % 2 == 1:
-                    return max(node.children).pointAdvantage
-                else:
-                    return min(node.children).pointAdvantage
+            # if not self.isSecondBot:
+            if node.children[0].depth % 2 == 1:
+                return max(node.children).pointAdvantage
             else:
-                if node.children[0].depth % 2 == 0:
-                    return max(node.children).pointAdvantage
-                else:
-                    return min(node.children).pointAdvantage
+                return min(node.children).pointAdvantage
+            # else:
+            #     if node.children[0].depth % 2 == 0:
+            #         return max(node.children).pointAdvantage
+            #     else:
+            #         return min(node.children).pointAdvantage
         else:
             return node.pointAdvantage
 

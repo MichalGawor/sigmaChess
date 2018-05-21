@@ -2,6 +2,16 @@ from pieces import *
 import os.path
 
 
+class BoardCOlours:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 class ChessBoard:
     def __init__(self):
         self.boardArray = [[]]
@@ -213,20 +223,40 @@ class ChessBoard:
         for i in range(8):
             print("")
             for j in range(8):
-                if type(self.boardArray[j][7 - i]) is piecePawn:
-                    print("P", end="")
-                elif type(self.boardArray[j][7-i]) is pieceKing:
-                    print("K", end="")
-                elif type(self.boardArray[j][7-i]) is pieceBishop:
-                    print("B", end="")
-                elif type(self.boardArray[j][7-i]) is pieceKnight:
-                    print("N", end="")
-                elif type(self.boardArray[j][7-i]) is pieceRook:
-                    print("R", end="")
-                elif type(self.boardArray[j][7-i]) is pieceQueen:
-                    print("Q",end="")
+                piece = self.getPiece(j, 7 - i)
+                if type(piece) is piecePawn:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mP", end="")
+                    else:
+                        print("\033[0;30;49mP", end="")
+                elif type(piece) is pieceKing:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mK", end="")
+                    else:
+                        print("\033[0;30;49mK", end="")
+                elif type(piece) is pieceBishop:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mB", end="")
+                    else:
+                        print("\033[0;30;49mB", end="")
+                elif type(piece) is pieceKnight:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mN", end="")
+                    else:
+                        print("\033[0;30;49mN", end="")
+                elif type(piece) is pieceRook:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mR", end="")
+                    else:
+                        print("\033[0;30;49mR", end="")
+                elif type(piece) is pieceQueen:
+                    if piece.faction is factionColor.FACTION_WHITE:
+                        print("\033[0;37;49mQ",end="")
+                    else:
+                        print("\033[0;30;49mQ", end="")
+
                 else:
-                    print("-", end="")
+                    print("\033[0;33;49m-", end="")
 
     def isVictory(self):
         whiteExist = False
@@ -325,4 +355,17 @@ class ChessBoard:
             else:
               self.boardArray[targetX][targetY] = None
 
+    def factionLost(self, faction):
+        factionExist = False
+        for i in range(8):
+            for j in range(8):
+                piece = self.getPiece(i, j)
+                if piece is None:
+                    continue
+                if type(piece) == pieceKing and piece.faction == faction:
+                    factionExist = True
 
+        if not factionExist:
+            print("Victory!")
+            return True
+        return False
