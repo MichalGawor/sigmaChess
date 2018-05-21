@@ -143,21 +143,23 @@ class Bot:
         return moveValue
 
     def getOptimalPointAdvantage(self, node):
-        if node.children:
-            for child in node.children:
-                child.pointAdvantage = self.getOptimalPointAdvantage(child)
-            # if not self.isSecondBot:
-            if node.children[0].depth % 2 == 1:
-                return max(node.children).pointAdvantage
-            else:
-                return min(node.children).pointAdvantage
-            # else:
-            #     if node.children[0].depth % 2 == 0:
-            #         return max(node.children).pointAdvantage
-            #     else:
-            #         return min(node.children).pointAdvantage
-        else:
+        return self.alphaBeta(node, -1e8, 1e8)
+
+    def alphaBeta(self, node, alpha, beta):
+        if not node.children:
             return node.pointAdvantage
+        if node.children[0].depth % 2 == 0: #enemy move
+            for child in node.children:
+                beta = min(beta, self.alphaBeta(child, alpha, beta))
+                if alpha >= beta:
+                    break
+            return beta
+        else:
+            for child in node.children:
+                alpha = max(alpha, self.alphaBeta(child, alpha, beta))
+                if alpha >= beta:
+                    break
+            return alpha
 
     def getBestMoves(self, moveTree):
         bestMoves = []
